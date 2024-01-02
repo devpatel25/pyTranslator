@@ -1,7 +1,6 @@
 import pandas as pd
-from googletrans import Translator
+from translate import Translator
 import time
-import xlrd
 
 def translate_file(input_file,output_file):
     start_time=time.time()      #start the timer
@@ -12,9 +11,9 @@ def translate_file(input_file,output_file):
         print(f"Error: {e}")
         return
 
-    translator=Translator()
+    translator=Translator(to_lang="en")
     for col in df.columns:
-        df[col]=df[col].apply(lambda x: translator.translate(x).text if not translator.translate(x).text == "error" else x)
+        df[col]=df[col].apply(lambda x: translator.translate(x) if not translator.translate(x) == "error" else x)
 
     # Save the translated data to a new file
     try:
@@ -27,6 +26,6 @@ def translate_file(input_file,output_file):
     print(f"Translation and saving completed in {run_time: .2f} sec.")
 
 if __name__=="__main__":
-    input_file="OrderExport.xls"
-    output_file="TranslatedOrderExport.xls"
+    input_file="OrderExport.xlsx"
+    output_file="TranslatedOrderExport.xlsx"
     translate_file(input_file,output_file)
